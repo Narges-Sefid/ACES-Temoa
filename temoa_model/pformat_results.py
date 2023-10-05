@@ -290,6 +290,20 @@ def pformat_results(pyomo_instance, pyomo_result, options):
                         continue
 
                     svars['Jobs'][r, p, t, v] += jobs
+                    
+    # Calculate the landCapacity numbers(without Period)
+    if hasattr(options, 'file_location') and os.path.join('temoa_model', 'config_sample_myopic') not in options.file_location:
+        for r, t, v in m.V_Capacity:
+            val = value(m.V_Capacity[r, t, v])
+            if abs(val) < epsilon:
+                continue
+            if (r, t, v) in m.LandPerCapacitywoPeriod.sparse_iterkeys():
+                landcap = abs(val) * value(m.LandPerCapacitywoPeriod[r, t, v])
+                if abs(landcap) < epsilon:
+                    continue
+
+                svars['LandCap'][r, t, v] += landcap
+
 
     # Calculate model costs:
     if hasattr(options, 'file_location') and os.path.join('temoa_model', 'config_sample_myopic') not in options.file_location:
@@ -538,7 +552,8 @@ def pformat_results(pyomo_instance, pyomo_result, options):
               "Objective": "Output_Objective",
               "Costs": "Output_Costs",
               "EmissionShadowPrice": "Output_ImplicitEmissionsPrice",
-              "Jobs": "Output_Employment"
+              "Jobs": "Output_Employment",
+              "LandCap": "Output_LandCapwoPeriod"
               }
 
     db_tables = ['time_periods', 'time_season', 'time_of_day', 'technologies', 'commodities',

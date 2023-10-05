@@ -881,6 +881,9 @@ def CapacityFactorTechIndices(M):
 def EmploymentIndices(M):
     return M.activeActivity_rptv
 
+def LandCapIndices(M):
+    return M.activeCapacity_rtv
+
 
 def CostFixedIndices(M):
     return M.activeActivity_rptv

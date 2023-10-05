@@ -249,6 +249,10 @@ def temoa_create_model(name="Temoa"):
     # Define employment factors
     M.Employment_rptv = Set(dimen=4, initialize=EmploymentIndices)
     M.EmploymentPerCapacity = Param(M.Employment_rptv, mutable=True)
+    
+    # Define landCapacity factors
+    M.Land_rtv = Set(dimen=3, initialize=LandCapIndices)
+    M.LandPerCapacitywoPeriod = Param(M.Land_rtv, mutable=True)
 
     # Define parameters associated with user-defined constraints
     M.RegionalGlobalIndices = Set(initialize=RegionalGlobalInitializedIndices)
