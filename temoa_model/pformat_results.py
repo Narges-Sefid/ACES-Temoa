@@ -303,6 +303,27 @@ def pformat_results(pyomo_instance, pyomo_result, options):
                     continue
 
                 svars['LandCap'][r, t, v] += landcap
+                
+    #Calculate the land per activity numbers
+    if hasattr(options, 'file_location') and os.path.join('temoa_model', 'config_sample_myopic') not in options.file_location:
+        for r, p, s, d, i, t, v, o in m.V_FlowOut:
+            if (r, t, v) in m.LandPerActivitywoPeriod.sparse_iterkeys():
+                val = value(m.LandPerActivitywoPeriod[r, t, v])
+                if abs(val) < epsilon:
+                    continue
+      
+                val2 = sum(
+                            value(m.V_FlowOut[r, S_p, S_s, S_d, i, t, v, o])
+                            for S_p in m.time_optimize if (S_p < v + value(m.LifetimeProcess[r, t, v])) and(S_p >= v)
+                            for S_s in m.time_season
+                            for S_d in m.time_of_day
+                            )
+
+                landact = abs(val) * abs(val2)
+                if abs(landact) < epsilon:
+                            continue
+               
+                svars['LandAct'][r, t, v] = landact
 
 
     # Calculate model costs:
@@ -553,7 +574,8 @@ def pformat_results(pyomo_instance, pyomo_result, options):
               "Costs": "Output_Costs",
               "EmissionShadowPrice": "Output_ImplicitEmissionsPrice",
               "Jobs": "Output_Employment",
-              "LandCap": "Output_LandCapwoPeriod"
+              "LandCap": "Output_LandCapwoPeriod",
+              "LandAct": "Output_LandActwoPeriod"
               }
 
     db_tables = ['time_periods', 'time_season', 'time_of_day', 'technologies', 'commodities',
