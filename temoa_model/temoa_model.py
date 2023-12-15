@@ -252,11 +252,11 @@ def temoa_create_model(name="Temoa"):
     
     # Define landCapacity factors
     M.LandCapacity_rtv = Set(dimen=3, initialize=LandCapIndices)
-    M.LandPerCapacitywoPeriod = Param(M.LandCapacity_rtv, mutable=True)
+    M.LandPerCapacitywoPeriod = Param(M.LandCapacity_rtv, mutable=True, default=0.0)
     
     # Define landActivity factors
     M.LandActivity_rtv = Set(dimen=3, initialize=LandActIndices)
-    M.LandPerActivitywoPeriod = Param(M.LandActivity_rtv, mutable=True)
+    M.LandPerActivitywoPeriod = Param(M.LandActivity_rtv, mutable=True, default=0.0)
 
     # Define parameters associated with user-defined constraints
     M.RegionalGlobalIndices = Set(initialize=RegionalGlobalInitializedIndices)

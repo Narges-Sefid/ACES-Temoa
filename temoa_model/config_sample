@@ -8,15 +8,15 @@
 # Input File (Mandatory)
 # Input can be a .sqlite or .dat file
 # Both relative path and absolute path are accepted
---input=data_files/ACES-7D-6S-Atlantic-LandCap-ActwoPeriod-in.sqlite
+--input=data_files/ACES-7D-6S-Atlantic-LandCap-ActwoPeriod-ITC-01-in.sqlite
 
 # Output File (Mandatory)
 # The output file must be a existing .sqlite file
---output=data_files/ACES-7D-6S-Atlantic-LandCap-ActwoPeriod-out.sqlite
+--output=data_files/ACES-7D-6S-Atlantic-LandCap-ActwoPeriod-ITC-01-out.sqlite
 
 # Scenario Name (Mandatory)
 # This scenario name is used to store results within the output .sqlite file
---scenario=ACES-7D-6S-Atlantic-LandCap-ActwoPeriod
+--scenario=ACES-7D-6S-Atlantic-LandCap-ActwoPeriod-ITC-01
 
 # Path to folder containing input dataset (Mandatory)
 # This is the location where database files reside
