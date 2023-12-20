@@ -1866,6 +1866,34 @@ Or to set a limit across all sectors, use the keyword 'all'.
     return expr
 
 
+def LandLimit_Constraint(M, r, p, t):
+    
+    land_limit = M.LandLimit[r, p, t]
+    
+    
+    cap_land = sum(
+        M.V_Capacity[r, t, S_v]
+        * M.LandPerCapacitywoPeriod[r, t, S_v]
+        for S_v in M.processVintages[r, p, t]
+        if ((r, p, t) in M.processVintages.keys())
+    )
+
+    act_land = sum(
+        M.LandPerActivitywoPeriod[r, t, S_v]
+        * M.V_FlowOut[r, S_p, S_s, S_d, S_i, t, S_v, S_o]
+        for S_v in M.processVintages[r, p, t]
+        if ((r, p, t) in M.processVintages.keys())        
+        for S_p in M.time_optimize if (value(S_p) < value(S_v + M.LifetimeProcess[r, t, S_v])) and(value(S_p) >= value(S_v))
+        for S_s in M.time_season
+        for S_d in M.time_of_day
+        for S_i in M.processInputs[r, S_p, t, S_v]
+        for S_o in M.ProcessOutputsByInput[r, S_p, t, S_v, S_i]
+        )
+                  
+
+    expr = cap_land + act_land  <= land_limit
+    return expr
+
 def GrowthRateConstraint_rule(M, p, r, t):
     r"""
 

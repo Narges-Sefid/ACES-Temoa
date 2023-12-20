@@ -274,6 +274,7 @@ def temoa_create_model(name="Temoa"):
     M.GrowthRateMax = Param(M.RegionalIndices, M.tech_all)
     M.GrowthRateSeed = Param(M.RegionalIndices, M.tech_all)
     M.EmissionLimit = Param(M.RegionalGlobalIndices, M.SectorGlobalIndices, M.time_optimize, M.commodity_emissions)
+    M.LandLimit = Param(M.RegionalGlobalIndices, M.time_optimize, M.tech_all)
     M.EmissionActivity_reitvo = Set(dimen=6, initialize=EmissionActivityIndices)
     M.EmissionActivity = Param(M.EmissionActivity_reitvo)
     M.MinActivityGroup = Param(M.RegionalIndices, M.time_optimize, M.groups)
@@ -495,6 +496,13 @@ def temoa_create_model(name="Temoa"):
     )
     M.EmissionLimitConstraint = Constraint(
         M.EmissionLimitConstraint_rxpe, rule=EmissionLimit_Constraint
+    )
+    
+    M.LandLimitConstraint_rpt = Set(
+        dimen=3, initialize=lambda M: M.LandLimit.sparse_iterkeys()
+    )
+    M.LandLimitConstraint = Constraint(
+        M.LandLimitConstraint_rpt, rule=LandLimit_Constraint
     )
 
     from itertools import product

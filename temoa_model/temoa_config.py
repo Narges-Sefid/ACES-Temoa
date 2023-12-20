@@ -199,6 +199,7 @@ def db_2_dat(ifile, ofile, options):
         ['param', 'EmploymentPerCapacity',     '',                    '',             4],
         ['param', 'LandPerCapacitywoPeriod',     '',                    '',             3],
         ['param', 'LandPerActivitywoPeriod',     '',                    '',             3],
+        ['param', 'LandLimit',     '',                    '',             3],
         ['param', 'StorageInitFrac',           '',                    '',             3],
         ['param', 'StorageDuration',           '',                    '',             2]]
 
